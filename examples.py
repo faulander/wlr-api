@@ -1,7 +1,7 @@
 from wlr import WlrAPI as wlrAPI
 
 # instantiate the Wiener Linien Remote API
-#
+# Get your own API Key here: 
 wlr = wlrAPI("Mu3YsSe2HHik42Jg")
 
 # at least once a day run wlr.update()
@@ -21,3 +21,4 @@ wlr.Update()
 #
 wlr.monitor(147, "stoerungkurz")
 wlr.monitor(147, 192, 248, "stoerungkurz", "stoerunglang")
+

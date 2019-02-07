@@ -1,5 +1,6 @@
 certifi==2018.11.29
 chardet==3.0.4
+fuzzywuzzy==0.17.0
 idna==2.8
 peewee==3.8.2
 pendulum==2.0.4

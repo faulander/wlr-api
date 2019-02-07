@@ -5,13 +5,12 @@ import uuid
 import os
 import csv
 import pendulum
+import peewee
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
+import sqlite3 as sql
 
 logger = logging.getLogger("wlr")
-
-# Key used for developing
-#key = "Mu3YsSe2HHik42Jg"
-# Key used for production
-# key = "8pKLaGwCurSyZrxe"
 
 class WlrAPI(object):
     def __init__(self, key):
@@ -68,7 +67,6 @@ class WlrAPI(object):
         else:
             return False
 
-    # TODO: Download Version CSV and check if an update is necessary
     def Update(self):
         today = pendulum.now(tz="Europe/Vienna")
         line_count = int()
@@ -84,5 +82,3 @@ class WlrAPI(object):
         if gueltig_ab > self.__LastChange("r"):
             self.__fullUpdate()
             # TODO: Import CSV into local database
-        else:
-            pass
