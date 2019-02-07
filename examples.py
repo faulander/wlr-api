@@ -1,8 +1,23 @@
 from wlr import WlrAPI as wlrAPI
 
+# instantiate the Wiener Linien Remote API
+#
 wlr = wlrAPI("Mu3YsSe2HHik42Jg")
-#print(wlr.monitor(147, "stoerunglang"))
-#print(wlr.monitor())
-#print(wlr.monitor(147, "stoerungkurz"))
 
-wlr.update()
+# at least once a day run wlr.update()
+# it checks if a newer version of the data is available
+#
+wlr.Update()
+
+# Monitor:
+# Current Updates for a given Station.
+# Possible values are:
+# - List of Stations with their RLP Number
+# - List of possible message typs:
+#   + 'stoerunglang'
+#   + 'stoerungkurz'
+# 
+# a mix of the values is also possible
+#
+wlr.monitor(147, "stoerungkurz")
+wlr.monitor(147, 192, 248, "stoerungkurz", "stoerunglang")

@@ -3,18 +3,20 @@ import requests
 import logging
 import uuid
 import os
+import csv
+import pendulum
 
 logger = logging.getLogger("wlr")
 
 # Key used for developing
-key = "Mu3YsSe2HHik42Jg"
+#key = "Mu3YsSe2HHik42Jg"
 # Key used for production
 # key = "8pKLaGwCurSyZrxe"
 
 class WlrAPI(object):
     def __init__(self, key):
         self.key = key
-        self.__checkUpdate()
+        #self.Update()
 
     def monitor(self, *args):
         if len(args) == 0:
@@ -41,17 +43,46 @@ class WlrAPI(object):
 
     def __downloadBaseData(self, filename, url):
         response = requests.get(url, stream=True)
-        handle = open(filename, "wb")
-        for chunk in response.iter_content(chunk_size=512):
-            if chunk:  # filter out keep-alive new chunks
-                handle.write(chunk)        
-    # TODO:  
-    def update(self):
+        try:
+            handle = open(filename, "wb")
+            for chunk in response.iter_content(chunk_size=512):
+                if chunk:  # filter out keep-alive new chunks
+                    handle.write(chunk)        
+        except:
+            logger.error("Cannot open %s", filename)
+
+    def __fullUpdate(self):
         self.__downloadBaseData("haltestellen.csv", "https://data.wien.gv.at/csv/wienerlinien-ogd-haltestellen.csv")
         self.__downloadBaseData("linien.csv", "https://data.wien.gv.at/csv/wienerlinien-ogd-linien.csv")
         self.__downloadBaseData("steige.csv", "https://data.wien.gv.at/csv/wienerlinien-ogd-steige.csv")
-        self.__downloadBaseData("version.csv", "https://data.wien.gv.at/csv/wienerlinien-ogd-version.csv")
+
+    def __LastChange(self, option, *args):
+        if option == "w":
+            with open('last_change.txt', 'w') as file:
+                file.write(str(args[0]))
+        elif option == "r":
+            with open('last_change.txt', 'r') as file:
+                lastchange = pendulum.parse(str(file.readline()), tz="Europe/Vienna")
+                #lastchange = file.readline()
+                return lastchange
+        else:
+            return False
 
     # TODO: Download Version CSV and check if an update is necessary
-    def __checkUpdate(self):
-        pass
+    def Update(self):
+        today = pendulum.now(tz="Europe/Vienna")
+        line_count = int()
+        self.__downloadBaseData("version.csv", "https://data.wien.gv.at/csv/wienerlinien-ogd-version.csv")
+        logger.info("Check for latest version")
+        with open('version.csv', mode='r') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=';', quotechar='"')
+            for row in csv_reader:
+                if line_count > 0:
+                    gueltig_ab = pendulum.parse(row[0], tz='Europe/Vienna')
+                    #erstellt_am = pendulum.parse(row[1], tz='Europe/Vienna')
+                line_count += 1
+        if gueltig_ab > self.__LastChange("r"):
+            self.__fullUpdate()
+            # TODO: Import CSV into local database
+        else:
+            pass
