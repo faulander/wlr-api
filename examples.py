@@ -23,3 +23,14 @@ wlr = wlrAPI("Mu3YsSe2HHik42Jg")
 #wlr.monitor(147, "stoerungkurz")
 #wlr.monitor(147, 192, 248, "stoerungkurz", "stoerunglang")
 
+# SearchStation:
+# Returns a dictionary of Stations with the given searchterm
+# the number represents the matching quality:
+# 0 would be completely different
+# 100 would be an exact match
+# >50 will deliver searchresults, even with typos
+# >80 will narrow down the searchresult to a few result
+#
+#wlr.SearchStation("zentralfriedhof", 85) 
+#wlr.SearchStation("alpertgasse", 90)
+

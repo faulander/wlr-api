@@ -7,7 +7,7 @@ import os
 import sys
 import csv
 #import pendulum
-#from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz as fuzz
 #from fuzzywuzzy import process
 import sqlite3 as sql
 
@@ -22,6 +22,15 @@ class WlrAPI(object):
                                   PRIVATE METHODS
     -----------------------------------------------------------------------------------
     """
+
+    def __dbConnection(self):
+        try: 
+            con = sql.connect("./wlr.db")
+            cur = con.cursor()
+            return con,cur
+        except:
+            print("Connecting to the database failed.")
+            sys.exit(-1)
 
     def __downloadBaseData(self, filename, url):
         print("Downloading", filename)
@@ -89,14 +98,25 @@ class WlrAPI(object):
         except:
             print("Creating of tables failed")
             sys.exit(-1)
-        # Read the csv and save it to the db
-        #TODO WRITE haltestellen.csv
-        #TODO WRITE steige.csv
-        with open('linien.csv') as linien:
+        # Read the linien.csv and save it to the db
+        with open('linien.csv', encoding='utf-8') as linien:
             csv_reader = csv.DictReader(linien, delimiter=';')
             to_db = [(i['LINIEN_ID'], i['BEZEICHNUNG'], i['REIHENFOLGE'], i['ECHTZEIT'], i['VERKEHRSMITTEL'], i['STAND']) for i in csv_reader]
-            #print(to_db)
         cur.executemany("INSERT INTO linien (LINIEN_ID, BEZEICHNUNG, REIHENFOLGE, ECHTZEIT, VERKEHRSMITTEL, STAND) VALUES (?, ?, ?, ?, ?, ?)", to_db)
+        con.commit()
+        # Read the haltestellen.csv and save it to the db
+        with open('haltestellen.csv', encoding='utf-8') as haltestellen:
+            csv_reader = csv.DictReader(haltestellen, delimiter=';')
+            to_db = [(i['HALTESTELLEN_ID'], i['TYP'], i['DIVA'], i['NAME'], i['GEMEINDE'], i['GEMEINDE_ID'], i['WGS84_LAT'], i['WGS84_LON'], i['STAND']) for i in csv_reader]
+            #print(to_db)
+        cur.executemany("INSERT INTO haltestellen VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", to_db)
+        con.commit()
+        # Read the steige.csv and save it to the db
+        with open('steige.csv', encoding='utf-8') as steige:
+            csv_reader = csv.DictReader(steige, delimiter=';')
+            to_db = [(i['STEIG_ID'], i['FK_LINIEN_ID'], i['FK_HALTESTELLEN_ID'], i['RICHTUNG'], i['REIHENFOLGE'], i['RBL_NUMMER'], i['BEREICH'], i['STEIG'], i['STEIG_WGS84_LAT'], i['STEIG_WGS84_LON'], i['STAND']) for i in csv_reader]
+            #print(to_db)
+        cur.executemany("INSERT INTO steige VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", to_db)
         con.commit()
 
     def __checkforUpdate(self):
@@ -104,7 +124,7 @@ class WlrAPI(object):
         if not os.path.isfile('./wlr.db'):
                 self.__fullUpdate()
         else:
-            print("DB has been found, if necessary to a manual update")
+            print("DB has been found, if necessary do a manual update")
 
     """
     -----------------------------------------------------------------------------------
@@ -139,3 +159,20 @@ class WlrAPI(object):
     def Update(self):
         self.__fullUpdate()
         self.__updateDB()
+
+    def SearchStation(self, term, ratio):
+        lstHaltestellen = list()
+        lstRBL = dict()
+        con, cur = self.__dbConnection()
+        cur.execute("SELECT NAME from haltestellen")
+        rows = cur.fetchall()
+        for row in rows:
+            fuzzTermRatio = fuzz.partial_ratio(term.lower(), row[0].lower())
+            if fuzzTermRatio > ratio:
+                lstRBL[row[0]] = fuzzTermRatio
+        return lstRBL
+
+
+    def GetRBL(self, station):
+
+        pass
