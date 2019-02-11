@@ -132,7 +132,7 @@ class WlrAPI(object):
     -----------------------------------------------------------------------------------
     """
 
-    def monitor(self, *args):
+    def Monitor(self, *args):
         if len(args) == 0:
             return False
         else:
@@ -152,7 +152,6 @@ class WlrAPI(object):
             url += urlrbl
             url += urlti
             url += "&sender=" + self.key
-            logger.info(url)
             response = requests.get(url)
             return json.loads(response.content)
 
@@ -170,9 +169,24 @@ class WlrAPI(object):
             fuzzTermRatio = fuzz.partial_ratio(term.lower(), row[0].lower())
             if fuzzTermRatio > ratio:
                 lstRBL[row[0]] = fuzzTermRatio
-        return lstRBL
+        return json.dumps(lstRBL)
 
 
     def GetRBL(self, station):
+        lstRBL = dict()
+        sqlGetRBL = """select linien.BEZEICHNUNG, steige.RICHTUNG, steige.RBL_NUMMER from steige
+                        INNER JOIN haltestellen on steige.FK_HALTESTELLEN_ID = haltestellen.HALTESTELLEN_ID
+                        INNER JOIN linien on steige.FK_LINIEN_ID = linien.LINIEN_ID
+                        where name = '"""
+        sqlGetRBL += station
+        sqlGetRBL += "'"
+        con, cur = self.__dbConnection()
+        cur.execute(sqlGetRBL)
+        rows = cur.fetchall()
+        for row in rows:
+            #print(row)
+            lstRBL[row[2]] = row[0]
+        return json.dumps(lstRBL)
 
-        pass
+    def GetDepartures(self, station):
+    data = json.loads(monitor(station, "stoerungkurz"))
