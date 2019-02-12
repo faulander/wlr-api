@@ -6,8 +6,8 @@ Python wrapper for the Wiener Linien API.
 
 First get a developer api key here: https://go.gv.at/l9ogdechtzeitdatenwienerlinienkeyanforderung
 The wrapper will work in python >3.5, not tested in <3.5.
-```
 
+```
 git clone https://github.com/faulander/wlr-api.git
 cd wlr-api
 pip install -r requirements.txt
