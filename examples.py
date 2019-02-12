@@ -1,5 +1,6 @@
 from wlr import WlrAPI as wlrAPI
 import pprint
+import json
 
 # instantiate the Wiener Linien Remote API
 # Get your own API Key here: 
@@ -57,4 +58,10 @@ wlr = wlrAPI("Mu3YsSe2HHik42Jg")
 #
 #     wlr.GetDepartures(250)
 
-pprint.pprint(wlr.monitor(250, 271, "stoerungkurz"), indent=1)
+#pprint.pprint(wlr.GetRBL("Albertgasse"))
+#pprint.pprint(wlr.monitor(250, 271, "stoerungkurz"), indent=1)
+
+print(wlr.GetDepartures(250))
+#nrLineStops = len(station250['data']['monitors'])
+#nrTransits = len(station250['data']['monitors'][0]['lines'][0]['departures']['departure'])
+#print (nrTransits)

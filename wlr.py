@@ -8,7 +8,6 @@ import sys
 import csv
 #import pendulum
 from fuzzywuzzy import fuzz as fuzz
-#from fuzzywuzzy import process
 import sqlite3 as sql
 
 class WlrAPI(object):
@@ -189,4 +188,20 @@ class WlrAPI(object):
         return json.dumps(lstRBL)
 
     def GetDepartures(self, station):
-    data = json.loads(monitor(station, "stoerungkurz"))
+        data = self.Monitor(station, "stoerungkurz")
+        lstFinal = list()
+        lstDepartures = list()
+        dictDepartures = dict()
+        nrLineStops = len(data['data']['monitors'])
+        for lineStop in range(0, nrLineStops):
+            nrTransits = len(data['data']['monitors'][lineStop]['lines'][0]['departures']['departure'])
+            dictDepartures['name'] = data['data']['monitors'][lineStop]['lines'][0]['name']
+            dictDepartures['towards'] = data['data']['monitors'][lineStop]['lines'][0]['towards']
+            dictDepartures['barrierfree'] = data['data']['monitors'][lineStop]['lines'][0]['barrierFree']
+            dictDepartures['realtime'] = data['data']['monitors'][lineStop]['lines'][0]['realtimeSupported']
+            dictDepartures['trafficjam'] = data['data']['monitors'][lineStop]['lines'][0]['trafficjam']
+            for transit in range(0, nrTransits):
+                lstDepartures.append(data['data']['monitors'][lineStop]['lines'][0]['departures']['departure'][transit]['departureTime']['timePlanned'])
+            dictDepartures['transits'] = lstDepartures
+            lstFinal.append(dictDepartures.copy())
+        return json.dumps(lstFinal)
