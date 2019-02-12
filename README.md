@@ -4,7 +4,7 @@ Python wrapper for the Wiener Linien API.
 
 ## Install
 
-First get a developer api key here: https://go.gv.at/l9ogdechtzeitdatenwienerlinienkeyanforderung
+First get a developer api key here: https://go.gv.at/l9ogdechtzeitdatenwienerlinienkeyanforderung. 
 The wrapper will work in python >3.5, not tested in <3.5.
 
 ```
@@ -12,8 +12,16 @@ git clone https://github.com/faulander/wlr-api.git
 cd wlr-api
 pip install -r requirements.txt
 ```
+For example usage please check 'examples.py'.
 
 ## Examples
+
+### Update:
+At least once a day the update command should be run. It checks the Wiener Linien API for new data and fills the local database with them. On the first run it doesn't need to be called extra, it's being done automatically.
+
+```
+wlr.Update()
+```
 
 ### Monitor:
 Current Updates for a given Station.
@@ -24,6 +32,7 @@ Possible values are:
     + 'stoerungkurz'
  
   a mix of the values is also possible
+
 ```
       wlr.Monitor(147, "stoerungkurz")
       wlr.Monitor(250, 271, "stoerungkurz", "stoerunglang")
@@ -38,8 +47,7 @@ Possible values are:
   the number represents the matching quality:
   0 would be completely different
   100 would be an exact match
-  >50 will deliver searchresults, even with typos
-  >80 will narrow down the searchresult to a few result
+
  ```
       wlr.SearchStation("zentralfriedhof", 85)
       wlr.SearchStation("alpertgasse", 90)
@@ -47,6 +55,7 @@ Possible values are:
 ### GetRBL:
 
   Returns a JSON Object with RBL-Number and Line-Name:
+
 ```
       wlr.GetRBL("Albertgasse")
  ```
@@ -54,6 +63,7 @@ Possible values are:
 
   Returns a JSON Object with the next departure times
   for the given station:
+
 ```
       wlr.GetDepartures(250)
 ```

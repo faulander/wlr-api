@@ -4,7 +4,7 @@ import json
 
 # instantiate the Wiener Linien Remote API
 # Get your own API Key here: 
-wlr = wlrAPI("Mu3YsSe2HHik42Jg")
+wlr = wlrAPI("Your own API KEY")
 #
 # at least once a day run wlr.update()
 # it checks if a newer version of the data is available
