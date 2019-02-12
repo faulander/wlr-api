@@ -1,4 +1,4 @@
-# Project Title
+# WLR-API
 
 Python wrapper for the Wiener Linien API.
 
@@ -11,7 +11,9 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 ```
-Give examples
+git clone https://github.com/faulander/wlr-api.git
+cd wlr-api
+pip install -r requirements.txt
 ```
 
 ### Installing
