@@ -143,3 +143,4 @@ pip-selfcheck.json
 
 ### WLR ###
 .notes 
+*.csv
