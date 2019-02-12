@@ -6,84 +6,56 @@ Python wrapper for the Wiener Linien API.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Install
 
-What things you need to install the software and how to install them
-
+First get a developer api key here: https://go.gv.at/l9ogdechtzeitdatenwienerlinienkeyanforderung
+The wrapper will work in python >3.5, not tested in <3.5.
 ```
+
 git clone https://github.com/faulander/wlr-api.git
 cd wlr-api
 pip install -r requirements.txt
 ```
 
-### Installing
+### Examples
 
-A step by step series of examples that tell you how to get a development env running
+## Monitor:
+Current Updates for a given Station.
+Possible values are:
+  - List of Stations with their RLP Number
+  - List of possible message types:
+    + 'stoerunglang'
+    + 'stoerungkurz'
+ 
+  a mix of the values is also possible
 
-Say what the step will be
+      wlr.Monitor(147, "stoerungkurz")
+      wlr.Monitor(250, 271, "stoerungkurz", "stoerunglang")
 
-```
-Give the example
-```
+  This function will not parse the JSON Object.
+  If you need specific Data like departure times only,
+  pleasse call getDepartures().
 
-And repeat
+## SearchStation:
 
-```
-until finished
-```
+  Returns a JSON Object of Stations with the given searchterm
+  the number represents the matching quality:
+  0 would be completely different
+  100 would be an exact match
+  >50 will deliver searchresults, even with typos
+  >80 will narrow down the searchresult to a few result
+ 
+      wlr.SearchStation("zentralfriedhof", 85)
+      wlr.SearchStation("alpertgasse", 90)
+ 
+## GetRBL:
 
-End with an example of getting some data out of the system or using it for a little demo
+  Returns a JSON Object with RBL-Number and Line-Name:
+      wlr.GetRBL("Albertgasse")
+ 
+## GetDepartures:
 
-## Running the tests
+  Returns a JSON Object with the next departure times
+  for the given station:
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+      wlr.GetDepartures(250)
