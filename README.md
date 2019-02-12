@@ -2,11 +2,7 @@
 
 Python wrapper for the Wiener Linien API.
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Install
+## Install
 
 First get a developer api key here: https://go.gv.at/l9ogdechtzeitdatenwienerlinienkeyanforderung
 The wrapper will work in python >3.5, not tested in <3.5.
@@ -17,9 +13,9 @@ cd wlr-api
 pip install -r requirements.txt
 ```
 
-### Examples
+## Examples
 
-## Monitor:
+### Monitor:
 Current Updates for a given Station.
 Possible values are:
   - List of Stations with their RLP Number
@@ -36,7 +32,7 @@ Possible values are:
   If you need specific Data like departure times only,
   pleasse call getDepartures().
 
-## SearchStation:
+### SearchStation:
 
   Returns a JSON Object of Stations with the given searchterm
   the number represents the matching quality:
@@ -48,12 +44,12 @@ Possible values are:
       wlr.SearchStation("zentralfriedhof", 85)
       wlr.SearchStation("alpertgasse", 90)
  
-## GetRBL:
+### GetRBL:
 
   Returns a JSON Object with RBL-Number and Line-Name:
       wlr.GetRBL("Albertgasse")
  
-## GetDepartures:
+### GetDepartures:
 
   Returns a JSON Object with the next departure times
   for the given station:
