@@ -24,10 +24,10 @@ Possible values are:
     + 'stoerungkurz'
  
   a mix of the values is also possible
-
+```
       wlr.Monitor(147, "stoerungkurz")
       wlr.Monitor(250, 271, "stoerungkurz", "stoerunglang")
-
+```
   This function will not parse the JSON Object.
   If you need specific Data like departure times only,
   pleasse call getDepartures().
@@ -40,18 +40,20 @@ Possible values are:
   100 would be an exact match
   >50 will deliver searchresults, even with typos
   >80 will narrow down the searchresult to a few result
- 
+ ```
       wlr.SearchStation("zentralfriedhof", 85)
       wlr.SearchStation("alpertgasse", 90)
- 
+ ```
 ### GetRBL:
 
   Returns a JSON Object with RBL-Number and Line-Name:
+```
       wlr.GetRBL("Albertgasse")
- 
+ ```
 ### GetDepartures:
 
   Returns a JSON Object with the next departure times
   for the given station:
-
+```
       wlr.GetDepartures(250)
+```
