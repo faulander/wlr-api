@@ -4,7 +4,7 @@ import json
 
 # instantiate the Wiener Linien Remote API
 # Get your own API Key here: 
-wlr = wlrAPI("Your own API KEY")
+wlr = wlrAPI("Mu3YsSe2HHik42Jg")
 #
 # at least once a day run wlr.update()
 # it checks if a newer version of the data is available
@@ -58,3 +58,11 @@ wlr = wlrAPI("Your own API KEY")
 #
 #     wlr.GetDepartures(250)
 #
+# -----------------------------------------------------------------------------------
+# GetTrafficInfoList:
+# -----------------------------------------------------------------------------------
+# Returns a JSON Object with traffic Information for the given lines.
+# If no line is provided, all traffic info is delivered.
+#
+#     wlr.GetTrafficInfoList("relatedLine=2", "relatedLine=U6")
+#     wlr.GetTrafficInfoList()

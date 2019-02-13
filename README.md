@@ -67,3 +67,17 @@ Possible values are:
 ```
       wlr.GetDepartures(250)
 ```
+### GetTrafficInfoList:
+  Returns a JSON Object with traffic Information for the given lines.
+  If no line is provided, all traffic info is delivered.
+
+```
+     wlr.GetTrafficInfoList("relatedLine=2", "relatedLine=U6")
+     wlr.GetTrafficInfoList()
+```
+
+## TODO:
++ If Realtime data is available, deliver it. Otherwise deliver planned data.
++ New method to deliver all data around a given location
++ Method "trafficinfolist"
++ Method "newlist"

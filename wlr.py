@@ -205,3 +205,13 @@ class WlrAPI(object):
             dictDepartures['transits'] = lstDepartures
             lstFinal.append(dictDepartures.copy())
         return json.dumps(lstFinal)
+
+    def GetTrafficInfoList(self, *args):
+        url = "https://www.wienerlinien.at/ogd_realtime/trafficInfoList?"
+        for arg in args:
+            url += arg
+            url += "&"
+        url += "sender=" + self.key
+        print(url)
+        response = requests.get(url)
+        return json.loads(response.content)
